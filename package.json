@@ -1,0 +1,39 @@
+{
+  "name": "gpx-viewer",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "devel": "vite build --mode development",
+    "build": "vite build --mode production",
+    "watch": "vite build --mode development --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "volta": {
+    "node": "22.11.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/eslint-parser": "^7.25.9",
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.15.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "eslint": "^9.15.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.12.0",
+    "prettier": "^3.4.1",
+    "rollup-plugin-esbuild": "^6.1.1",
+    "sass": "^1.81.0",
+    "vite": "^6.0.1"
+  },
+  "packageManager": "pnpm@9.14.2+sha512.6e2baf77d06b9362294152c851c4f278ede37ab1eba3a55fda317a4a17b209f4dbb973fb250a77abc463a341fcb1f17f17cfa24091c4eb319cda0d9b84278387",
+  "dependencies": {
+    "exif-js": "^2.3.0",
+    "kintone-ui-component": "^1.18.0",
+    "maplibre-gl": "^4.7.1",
+    "maplibre-gl-gsi-terrain": "^2.0.1"
+  }
+}
