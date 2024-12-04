@@ -196,7 +196,7 @@ body {
         background-color: gainsboro;
       }
 
-      .disabled {
+      &.disabled {
         pointer-events: none;
         .control-button-label {
           opacity: 0.4;

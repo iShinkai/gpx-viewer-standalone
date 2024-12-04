@@ -19,7 +19,7 @@
 /**
  * 指定のレコードファイルを取得して JSON データを返却する
  */
-export const fetchRecordFile = async (file) => {
+export const fetchRecordFile = async (file, isEach = false) => {
   console.log('指定のレコードファイルを取得して JSON データを返却する')
 
   // JSON ファイルでなければ何もしない
@@ -36,6 +36,9 @@ export const fetchRecordFile = async (file) => {
   try {
     const json = await response.json()
     console.log(json)
+    // 個々のレコードファイルならそのまま返却
+    if (isEach) return json
+
     if (!json.records) return []
 
     // 返却
@@ -62,21 +65,26 @@ export const downloadFile = async (file) => {
  * XMLファイルを取得し文字列で返却する
  */
 export const loadXmlFileToText = async (file) => {
-  const arrayBuffer = await downloadFile(file)
-  const textDecoder = new TextDecoder()
-  const xmlStr = textDecoder.decode(arrayBuffer)
+  const response = await downloadFile(file)
+  if (!response.ok) {
+    console.warn(response)
+    return ''
+  }
 
   // 返却
-  return xmlStr
+  return await response.text()
 }
 
 /**
  * 画像ファイルを取得し Blob で返却する
  */
 export const loadImageFileToBlob = async (file) => {
-  const arrayBuffer = await downloadFile(file)
-  const blob = new Blob([arrayBuffer])
+  const response = await downloadFile(file)
+  if (!response.ok) {
+    console.warn(response)
+    return []
+  }
 
   // 返却
-  return blob
+  return await response.blob()
 }

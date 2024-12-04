@@ -575,7 +575,7 @@ const createAnimationControlBox = ({
   container.appendChild(box)
 
   // 各ボタンにイベントを設置する
-  if (timestamps) {
+  if (timestamps && timestamps.length) {
     setPosControlButtonEvents({ map, coordinates, timestamps })
   }
 }

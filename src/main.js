@@ -55,12 +55,17 @@ const prepareData = async (record) => {
   console.log('描画対象データを準備する')
   console.log(record)
 
-  // いったん
-  return { coordinates: [], timestamps: [], photos: [] }
+  // レコードのディレクトリ
+  const eachDir = record.src.replace('/record.json', '')
 
-  // 添付ファイルフィールドから GPX ファイルを抽出する
-  const files = record['GPXファイル'].value
-  const gpxFile = files.find((f) => f.name.endsWith('.gpx'))
+  // 各レコードのレコードファイルを取得する
+  const eachRecord = await fetchRecordFile(`${DATA_DIR}/${record.src}`, true)
+  console.log(eachRecord)
+
+  // GPX ファイルのパス
+  const gpxFile = `${DATA_DIR}/${eachDir}/${eachRecord.gpx}`
+  console.log('GPX ファイルのパス')
+  console.log(gpxFile)
   if (!gpxFile) return
 
   // GPX ファイルから緯度経度高度情報配列と記録日時配列を得る
@@ -70,23 +75,21 @@ const prepareData = async (record) => {
   // 写真テーブルから JGP 画像を取得する
   // テーブルの個々の行には画像は1ファイルの想定
   const photos = []
-  if (record['画像ファイルテーブル'].value.length) {
-    record['画像ファイルテーブル'].value.forEach((row) => {
+  if (eachRecord.photos.length) {
+    eachRecord.photos.forEach((photo) => {
       if (
-        row.value['画像ファイル'].value &&
-        row.value['画像ファイル'].value.length &&
-        row.value['画像ファイル'].value[0].contentType === 'image/jpeg'
+        photo.src.toLowerCase().endsWith('.jpg') ||
+        photo.src.toLowerCase().endsWith('.jpeg')
       ) {
-        photos.push({
-          ...row.value['画像ファイル'].value[0],
-          comment: row.value['画像コメント'].value || '',
-        })
+        photos.push({ src: photo.src, comment: photo.comment || '' })
       }
     })
 
     // 画像をダウンロードして blob を確保する
     for (const photo of photos) {
-      const blob = await loadImageFileToBlob(photo)
+      const blob = await loadImageFileToBlob(
+        `${DATA_DIR}/${eachDir}/${photo.src}`,
+      )
       photo.blob = blob
     }
     console.log(photos)
@@ -164,6 +167,9 @@ const main = async () => {
         rootContainer,
         className: MAP_CONTAINER,
       })
+
+      // レコード選択リストを設置する
+      createRecordSelectDropdown(records, rootContainer)
     } else {
       // レコードがなければ初期値で描画する
       await generateMapContent({
@@ -175,6 +181,53 @@ const main = async () => {
       })
     }
   }
+}
+
+/**
+ * レコード選択ドロップダウンリストを設置する
+ */
+const createRecordSelectDropdown = (records, container) => {
+  console.log('レコード選択ドロップダウンリストを設置する')
+  // ドロップダウンの項目を作成する
+  const data = records.map((record) => {
+    const date = record.date || ''
+    return {
+      label: `${record.title}${date ? ` [${dateToString(new Date(date), 'date')}]` : ''}`,
+      value: record.id.toString(),
+    }
+  })
+
+  // ドロップダウンを作成する
+  const dropdown = createDropdown({
+    data,
+    container,
+    className: 'record-select',
+  })
+
+  // イベントを設置する
+  dropdown.addEventListener('change', async (event) => {
+    console.log('ドロップダウンリストを選択')
+    console.log(event.detail.value)
+    const selectedRecord = records.find(
+      (r) => r.id.toString() === event.detail.value,
+    )
+    // 地図マウントルートコンテナ要素
+    const rootContainer = document.getElementById(GPX_VIEWER_CONTAINER)
+    if (selectedRecord && rootContainer) {
+      // 描画対象データを準備する
+      const { coordinates, timestamps, photos } =
+        await prepareData(selectedRecord)
+
+      // 地図コンテンツ部を構築する
+      await generateMapContent({
+        coordinates,
+        timestamps,
+        photos,
+        rootContainer,
+        className: MAP_CONTAINER,
+      })
+    }
+  })
 }
 
 /** エントリポイントから開始する */
