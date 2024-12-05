@@ -1,6 +1,6 @@
 /**
  * ============================================================
- *     GPV Viewer 共通関数群
+ *     gpx-viewer 共通関数群
  * ============================================================
  */
 
@@ -566,7 +566,7 @@ const createAnimationControlBox = ({
   box.classList.add('animation-control-box')
 
   // 表示切替ボックスを作成する
-  createDispControlBox(box, mapContainer)
+  createDispControlBox(map, box, mapContainer)
 
   // 現在位置ボックスを作成する
   createCuurrentPosBox(box, timestamps[0])
@@ -589,7 +589,7 @@ const createAnimationControlBox = ({
 /**
  * 表示切替ボックスを作成する
  */
-const createDispControlBox = (box, mapContainer) => {
+const createDispControlBox = (map, box, mapContainer) => {
   const dispControlBox = document.createElement('div')
   dispControlBox.classList.add('disp-control-box')
 
@@ -627,6 +627,7 @@ const createDispControlBox = (box, mapContainer) => {
     northupButton.classList.toggle('is-north-up')
     northupButton.classList.toggle('is-heading-up')
     isNorthUpView = !isNorthUpView
+    if (isNorthUpView) map.rotateTo(0)
   })
   dispControlBox.appendChild(northupButton)
 
