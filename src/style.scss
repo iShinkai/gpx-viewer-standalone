@@ -3,3 +3,311 @@
  *     GPV Viewer スタンドアロン版 スタイルシート
  * ============================================================
  */
+
+/** ボディ */
+body {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+/** 親コンテナ */
+.gpx_viewer {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+/** 地図コンテナ */
+.map_container {
+  height: 100vh;
+  width: 100vw;
+}
+
+/** ポップアップ */
+.popup {
+  z-index: 2;
+}
+
+/** ポップアップのボディ部 */
+.popup-body {
+  display: flex;
+  flex-direction: column;
+
+  /** ポップアップの画像 */
+  .popup-body-image {
+    margin-top: 12px;
+    width: 100%;
+  }
+
+  /** ポップアップの説明 */
+  .popup-body-desc {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+
+    /** 説明内の撮影日時 */
+    .popup-body-desc-timestamp {
+      color: gray;
+      font-style: italic;
+      margin-left: 12px;
+      white-space: nowrap;
+    }
+  }
+}
+
+/** コントロールボックス */
+.control-box {
+  display: grid;
+  grid-template-rows: auto auto;
+  padding: 8px;
+  position: absolute;
+  right: 24px;
+  row-gap: 16px;
+  top: 24px;
+  z-index: 1;
+}
+
+/** アニメーションコントローラー */
+.animation-control-box {
+  display: grid;
+  row-gap: 8px;
+  position: relative;
+
+  /** 表示切替ボックス */
+  .disp-control-box {
+    display: flex;
+    justify-content: flex-end;
+
+    .disp-control-button {
+      background-color: whitesmoke;
+      border: 1px solid gray;
+      border-radius: 0 4px 4px 0;
+      color: dimgray;
+      cursor: pointer;
+      display: flex;
+      font-size: 1.6rem;
+      font-weight: bold;
+      justify-content: center;
+      height: 36px;
+      width: 48px;
+
+      .disp-control-button-label {
+        transform: scaleX(0.65);
+      }
+
+      &:first-of-type {
+        border-radius: 4px 0 0 4px;
+        border-right-width: 0;
+      }
+
+      &:hover {
+        background-color: gainsboro;
+      }
+
+      &.is-active,
+      &.is-active:hover {
+        background-color: dodgerblue;
+        color: white;
+      }
+
+      &.is-heading-up {
+        .disp-control-button-label {
+          div {
+            transform: skew(-60deg, 10deg) scale(0.75);
+          }
+
+          &::before {
+            content: '◯';
+            opacity: 0.75;
+            position: absolute;
+            transform: skew(40deg, -20deg) scale(2, 0.75);
+          }
+        }
+      }
+    }
+  }
+
+  /** 現在位置ボックス */
+  .current-position-box {
+    background-color: white;
+    border: 1px solid black;
+    font-size: 1.6rem;
+    height: 36px;
+    line-height: 36px;
+    position: relative;
+    text-align: center;
+  }
+
+  /** 表示位置コントローラーボックス */
+  .position-control-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+
+    /** 各種コントロールボタン */
+    .control-button {
+      align-items: center;
+      background-color: whitesmoke;
+      border: 1px solid gray;
+      border-right-width: 0;
+      color: dimgray;
+      cursor: pointer;
+      display: flex;
+      font-size: 1rem;
+      height: 24px;
+      justify-content: center;
+      line-height: 24px;
+      text-align: center;
+
+      .control-button-label {
+        user-select: none;
+      }
+
+      &.button-first {
+        border-radius: 4px 0 0 4px;
+      }
+      &.button-last {
+        border-radius: 0 4px 4px 0;
+        border-right-width: 1px;
+      }
+      &.button-prev,
+      &.button-next {
+        .control-button-label {
+          transform: scaleX(0.75);
+        }
+      }
+      &.button-play {
+        .control-button-label {
+          transform: scaleX(1.5);
+        }
+      }
+      &.button-stop {
+        display: none;
+
+        .control-button-label {
+          letter-spacing: -0.25rem;
+          margin-top: -3px;
+          text-indent: -0.25rem;
+          transform: scaleX(6);
+        }
+      }
+
+      &:hover {
+        background-color: gainsboro;
+      }
+
+      &.disabled {
+        pointer-events: none;
+        .control-button-label {
+          opacity: 0.4;
+        }
+      }
+    }
+
+    /** 再生中 */
+    &.is-playing {
+      .button-play {
+        display: none;
+      }
+      .button-stop {
+        display: flex;
+      }
+    }
+  }
+}
+
+/** ポイントリストのボックス */
+.point-list-box {
+  background-color: white;
+  border: 1px solid black;
+  display: grid;
+  grid-template-rows: 24px 1fr;
+  position: relative;
+}
+
+/** ポイントリストのヘッダ部 */
+.point-list-header {
+  height: 24px;
+}
+
+/** ポイントリストのステップ数 */
+.point-list-steps {
+  height: 24px;
+  line-height: 24px;
+  padding: 0 8px;
+}
+
+/** ポイントリストの最小化ボタン */
+.point-list-min-button {
+  cursor: pointer;
+  font-size: 20px;
+  height: 20px;
+  line-height: 20px;
+  position: absolute;
+  right: 8px;
+  top: 2px;
+  transition: transform 0.3s ease;
+  width: 20px;
+
+  &.is-closed {
+    transform: rotate(-180deg);
+  }
+}
+
+/** ポイントリストのテーブルのコンテナ */
+.point-list-table-container {
+  display: grid;
+  grid-template-rows: 1fr;
+  max-height: 300px;
+  transition:
+    grid-template-rows 0.3s ease,
+    opacity 0.3s ease;
+
+  .point-list-table-container-inner {
+    overflow: hidden;
+
+    .point-list-table {
+      max-height: 300px;
+      overflow-y: auto;
+
+      table {
+        font-size: 0.675rem;
+        width: 100%;
+      }
+      thead th {
+        height: unset;
+        padding: 0 8px;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+      tbody tr {
+        &:hover,
+        &.selected-row {
+          color: blue;
+          background-color: lightcyan;
+          cursor: pointer;
+        }
+        td {
+          padding: 0 8px;
+          text-align: right;
+          --kuc-readonly-table-header-3-width: 60px;
+        }
+      }
+    }
+  }
+
+  &.is-closed {
+    opacity: 0;
+    grid-template-rows: 0fr;
+  }
+}
+
+/** レコード選択ドロップダウンリスト */
+.record-select {
+  left: 36px;
+  position: absolute;
+  top: 24px;
+  width: 600px;
+  z-index: 1;
+}
