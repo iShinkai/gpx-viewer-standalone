@@ -88,6 +88,15 @@ pnpm watch
 pnpm build
 ```
 
+## kintone 版
+
+サイボウズの業務改善プラットフォーム kintone 上のアプリで動かす事ができるバージョンは以下で公開しています。
+
+[GPX Viewer kintone 版（リポジトリ）](https://github.com/iShinkai/gpx-viewer-kintone)
+
+Qiita の記事は以下を参照してください。
+[kintone × MapLibre で旅の想い出を可視化する](https://qiita.com/iShinkai/items/f20edc14c5689df8e0cd)
+
 ## ライセンス
 
 `dist/data` 以下のファイルを除き MIT ライセンスです。
