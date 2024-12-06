@@ -2,6 +2,12 @@
 
 静的に配置した GPX データや写真データを読み取り MapLibre で描画する実証アプリです。
 
+コンテンツは以下のURLで公開しています。
+
+https://ishinkai.github.io/gpx-viewer-standalone/dist/
+
+初期表示やリスト選択時にそこそこ待たされることもあるかも知れませんが、処理中なだけなのでしばらく待てばちゃんと表示されます。
+
 ## インストールとセットアップ
 
 volta と corepack、pnpm を使用しています。
