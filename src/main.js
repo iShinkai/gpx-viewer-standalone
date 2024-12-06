@@ -145,12 +145,13 @@ const generateMapContent = async ({
  */
 const main = async () => {
   console.log('gpx-viewer-standalone')
-  document.querySelector('.map_container').innerHTML =
-    'GPX Viewer スタンドアロン版'
 
   // 地図マウントルートコンテナを取得する
   const rootContainer = document.getElementById(GPX_VIEWER_CONTAINER)
   if (rootContainer) {
+    // ローダーを差し込む
+    showHideLoader(rootContainer, true)
+
     // レコードファイルを取得する
     const records = await fetchRecordFile(RECORD_FILE_PATH)
 
@@ -180,6 +181,9 @@ const main = async () => {
         className: MAP_CONTAINER,
       })
     }
+
+    // ローダーを落とす
+    showHideLoader(rootContainer, false)
   }
 }
 
@@ -214,6 +218,9 @@ const createRecordSelectDropdown = (records, container) => {
     // 地図マウントルートコンテナ要素
     const rootContainer = document.getElementById(GPX_VIEWER_CONTAINER)
     if (selectedRecord && rootContainer) {
+      // ローダーを差し込む
+      showHideLoader(rootContainer, true)
+
       // 描画対象データを準備する
       const { coordinates, timestamps, photos } =
         await prepareData(selectedRecord)
@@ -226,8 +233,27 @@ const createRecordSelectDropdown = (records, container) => {
         rootContainer,
         className: MAP_CONTAINER,
       })
+
+      // ローダーを落とす
+      showHideLoader(rootContainer, false)
     }
   })
+}
+
+/**
+ * ローダーを表示・非表示する
+ */
+const showHideLoader = (rootContainer, isLoading) => {
+  if (isLoading) {
+    const loader = document.createElement('div')
+    loader.classList.add('loader')
+    rootContainer.appendChild(loader)
+  } else {
+    const loader = rootContainer.querySelector('.loader')
+    if (loader) {
+      rootContainer.removeChild(loader)
+    }
+  }
 }
 
 /** エントリポイントから開始する */
