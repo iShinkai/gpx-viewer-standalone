@@ -13,6 +13,9 @@ body {
 
 /** 親コンテナ */
 .gpx_viewer {
+  align-items: center;
+  display: flex;
+  justify-content: center;
   margin: 0;
   padding: 0;
   position: relative;
@@ -310,4 +313,26 @@ body {
   top: 24px;
   width: 600px;
   z-index: 1;
+}
+
+/** ローダー */
+.loader {
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-name: spin;
+  animation-timing-function: ease-in-out;
+  border: solid 8px;
+  border-color: #666666 #66666610 #66666610;
+  border-radius: 50%;
+  height: 40px;
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  z-index: 20;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
