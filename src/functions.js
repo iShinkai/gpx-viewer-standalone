@@ -432,7 +432,7 @@ export const drawMarkersByPhotos = async ({ map, files }) => {
  */
 const readImageExifData = async (file) => {
   // Blob URL（表示用データURL）
-  const blobUrl = window.URL.createObjectURL(file.blob)
+  const blobUrl = URL.createObjectURL(file.blob)
 
   // File オブジェクト
   const fileObj = new File([file.blob], file.name, { type: file.blob.type })
