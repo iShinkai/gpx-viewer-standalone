@@ -5,9 +5,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "devel": "vite build --mode development",
+    "devel": "vite build --mode development --sourcemap true",
     "build": "vite build --mode production",
-    "watch": "vite build --mode development --watch"
+    "watch": "vite build --mode development --sourcemap true --watch"
   },
   "keywords": [],
   "author": "",

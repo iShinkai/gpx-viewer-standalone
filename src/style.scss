@@ -59,6 +59,63 @@ body {
   }
 }
 
+/** イメージ表示モーダルコンテナ */
+.modal-background {
+  align-items: center;
+  background-color: rgb(0, 0, 0, 0.7);
+  display: flex;
+  height: 100vh;
+  inset: 0;
+  justify-content: center;
+  position: fixed;
+  transition: opacity 0.3s ease;
+  width: 100vw;
+  z-index: 9999;
+
+  /** 非表示時 */
+  &.hidden {
+    opacity: 0;
+  }
+
+  /** モーダル上のコンテンツ */
+  .modal-content {
+    transition: transform 0.3s ease;
+
+    /** 非表示時 */
+    &.hidden {
+      transform: scale(0.7);
+    }
+  }
+
+  /** モーダル上のイメージ */
+  .modal-image {
+    max-width: 80vw;
+    max-height: 80vh;
+  }
+
+  /** モーダル上の説明部 */
+  .modal-desc {
+    background-color: rgb(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 24px;
+
+    /** モーダル上のコメント */
+    .modal-desc-comment {
+      color: white;
+      font-size: 16px;
+    }
+
+    /** モーダル上のタイムスタンプ */
+    .modal-desc-timestamp {
+      color: gray;
+      font-style: italic;
+      margin-left: 14px;
+      white-space: nowrap;
+    }
+  }
+}
+
 /** コントロールボックス */
 .control-box {
   display: grid;

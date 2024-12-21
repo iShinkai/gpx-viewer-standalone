@@ -412,6 +412,11 @@ export const drawMarkersByPhotos = async ({ map, files }) => {
 
       popupBody.appendChild(desc)
 
+      // ボディ部にイベントを設置する
+      popupBody.addEventListener('click', () => {
+        showPhotoModal(image)
+      })
+
       // ポップアップ
       const popup = new Popup({ className: 'popup' })
         .setMaxWidth('400px')
@@ -508,6 +513,68 @@ const exifToTimestamp = (exif) => {
     return new Date(dateTimeText)
   }
   return null
+}
+
+/**
+ * イメージをモーダルダイアログで表示する
+ */
+export const showPhotoModal = (image) => {
+  console.log(image.comment)
+
+  // モーダル背景
+  const modalBg = document.createElement('div')
+  modalBg.classList.add('modal-background', 'hidden')
+
+  // モーダルコンテンツ部
+  const modalContent = document.createElement('div')
+  modalContent.classList.add('modal-content', 'hidden')
+
+  // 画像
+  const img = document.createElement('img')
+  img.classList.add('modal-image')
+  img.src = image.blobUrl
+
+  // 説明部
+  const commentContainer = document.createElement('div')
+  commentContainer.classList.add('modal-desc')
+  const comment = document.createElement('div')
+  comment.innerText = image.comment
+  comment.classList.add('modal-desc-comment')
+  const timestamp = document.createElement('div')
+  timestamp.classList.add('modal-desc-timestamp')
+  timestamp.innerHTML = image.timestamp ? dateToString(image.timestamp) : ''
+
+  // 積み上げる
+  commentContainer.appendChild(comment)
+  commentContainer.appendChild(timestamp)
+  modalContent.appendChild(img)
+  modalContent.appendChild(commentContainer)
+  modalBg.appendChild(modalContent)
+
+  // モーダル背景にイベントを設置する
+  modalBg.addEventListener('click', () => {
+    // 背景とコンテンツにクラスをつける
+    modalBg.classList.add('hidden')
+    modalContent.classList.add('hidden')
+
+    // 指定秒後にモーダル要素を消しボディ部のスクロールを戻す
+    setTimeout(() => {
+      modalBg.parentElement.removeChild(modalBg)
+      document.body.style.overflow = ''
+    }, 300)
+  })
+
+  // モーダル背景をボディに設置する
+  document.body.appendChild(modalBg)
+
+  // ボディのスクロールを禁止する
+  document.body.style.overflow = 'hidden'
+
+  // クラスを取り払ってトランジションを開始する
+  setTimeout(() => {
+    modalBg.classList.remove('hidden')
+    modalContent.classList.remove('hidden')
+  }, 10)
 }
 
 /**
